@@ -1,0 +1,44 @@
+﻿<Window x:Class="GoogleBooksClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GoogleBooksClient"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="20">
+            <Button HorizontalAlignment="Left" Click="Show_Favorites_Button_Click">Favoriten</Button>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Margin="0 0 10 0">Gesuchtes Buch:</TextBlock>
+                <TextBox x:Name="tbSuchbegriff" Margin="0 0 10 0" Width="200"></TextBox>
+                <Button Click="SuchButton_Click">Suche</Button>
+            </StackPanel>
+            <ListBox x:Name="listboxBuchanzeige" HorizontalContentAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type local:Book}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Image HorizontalAlignment="Left" Height="100" 
+                                   Source="{Binding volumeInfo.imageLinks.smallThumbnail}" />
+                            <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding volumeInfo.title}" TextAlignment="Justify" />
+                                <ItemsControl ItemsSource="{Binding volumeInfo.authors}" />
+                                <TextBlock><Hyperlink Click="Hyperlink_Click" NavigateUri="{Binding volumeInfo.previewLink}">Link</Hyperlink></TextBlock>
+                            </StackPanel>
+                            <Button Grid.Column="2" HorizontalAlignment="Right" Margin="0 0 10 0" 
+                                    VerticalAlignment="Center" Tag="{Binding}" 
+                                    Click="Favorite_Button_Click" 
+                                    Content="{Binding IsFavorite,Converter={StaticResource boolToString}}" />
+
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+    </ScrollViewer>
+</Window>
